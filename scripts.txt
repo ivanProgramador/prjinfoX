@@ -1,0 +1,36 @@
+CREATE TABLE tbusuarios(
+   iduser int PRIMARY KEY AUTO_INCREMENT,
+   usuario varchar(50) not null,
+   fone varchar(15),
+   login varchar(15) not null unique,
+   senha varchar(15) not null
+);
+
+INSERT INTO `tbusuarios`(`iduser`, `usuario`, `fone`, `login`, `senha`) VALUES (1,'jose de assis','9999-9999','joseassis',123456);
+
+CREATE TABLE clientes(
+  idcli int PRIMARY KEY AUTO_INCREMENT,
+  nomecli varchar(50) not null,
+  endcli varchar(100),
+  fonecli varchar(50) not null,
+  emailcli varchar(50)
+); 
+
+INSERT INTO `clientes`(`idcli`, `nomecli`, `endcli`, `fonecli`, `emailcli`) VALUES ('Linus torvalds','Rua 470','5555-5555','linux@linux.com');
+
+
+use dbinfox;
+CREATE TABLE tbos(
+ os int PRIMARY KEY AUTO_INCREMENT,
+ data_os timestamp DEFAULT CURRENT_TIMESTAMP,
+ equipamento varchar(150) not null,
+ defeito varchar(150) not null,
+ servico varchar(150),
+ tecnico varchar(50) not null,
+ valor decimal(10,2),
+ idcli int NOT null,
+ FOREIGN KEY(idcli) REFERENCES tbclientes(idcli)
+
+);
+
+
