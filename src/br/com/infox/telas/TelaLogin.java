@@ -33,8 +33,11 @@ public void logar(){
         //aqui ele pega o conteudo do campo usuario e coloca no 1 '?'
         pst.setString(1,txtUsuario.getText());
         
+        
+        String captura = new String(txtSenha.getPassword());
+        
         //aqui ele pega o conteudo do campo usuario e coloca no 2 '?'
-        pst.setString(2,txtSenha.getText());
+        pst.setString(2,captura);
         
         //agora com a consulta pronta eu vou executar 
         
@@ -43,6 +46,9 @@ public void logar(){
         if(rs.next()){
            TelaPrincipal principal = new TelaPrincipal();
            principal.setVisible(true);
+           //fechando a tela de login depois de abrir a tela principal 
+           this.dispose();
+           conexao.close();
         }else{
           JOptionPane.showMessageDialog(null,"Usuário ou senha invalida !");
         
