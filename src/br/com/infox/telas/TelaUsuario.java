@@ -5,17 +5,45 @@
  */
 package br.com.infox.telas;
 
+import java.sql.*;
+import br.com.infox.dal.ModuloConexao;
+
 /**
  *
  * @author dev
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
+    
+    Connection conexao = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
 
     /**
      * Creates new form TelaUsuario
      */
     public TelaUsuario() {
         initComponents();
+        conexao = ModuloConexao.conector();
+    }
+    
+    private void consultar(){
+    
+      String sql = "select * from tbusuarios where id = ?";
+      
+        try {
+            
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1,txtUsuId.getText());
+            rs = pst.executeQuery();
+            
+            if(rs.next()){
+              txtUsuNome.setText(rs.getString(2));   
+             }else{
+            }
+            
+        } catch (Exception e) {
+        }
+    
     }
 
     /**
@@ -77,6 +105,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/read.png"))); // NOI18N
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/update.png"))); // NOI18N
         jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -169,6 +202,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private void cboUsuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboUsuPerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboUsuPerfilActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // chamando a função consultar 
+        consultar();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
