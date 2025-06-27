@@ -7,6 +7,7 @@ package br.com.infox.telas;
 
 import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,9 +27,10 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         conexao = ModuloConexao.conector();
     }
     
+    //metodo de consulta
     private void consultar(){
     
-      String sql = "select * from tbusuarios where id = ?";
+      String sql = "select * from tbusuarios where iduser = ?";
       
         try {
             
@@ -37,14 +39,75 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             rs = pst.executeQuery();
             
             if(rs.next()){
-              txtUsuNome.setText(rs.getString(2));   
+              txtUsuNome.setText(rs.getString(2));
+              txtUsuLogin.setText(rs.getString(4));
+              txtUsuSenha.setText(rs.getString(5));
+              txtUsuFone.setText(rs.getString(3));
+              cboUsuPerfil.setSelectedItem(rs.getString(6));
+              
              }else{
+                JOptionPane.showMessageDialog(null,"Usuario Não cadastrado");
+                txtUsuNome.setText(null);
+              txtUsuLogin.setText(null);
+              txtUsuSenha.setText(null);
+              txtUsuFone.setText(null);
+              cboUsuPerfil.setSelectedItem(null);
             }
             
         } catch (Exception e) {
+            System.out.println(e);
         }
     
     }
+    
+    //metodo de gravra usuarios 
+    
+    private void adicionar(){
+       String sql = "insert into tbusuarios(iduser,usuario,fone,login,senha,perfil)values(?,?,?,?,?,?)";
+       
+        try {
+            
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1,txtUsuId.getText());
+            pst.setString(2,txtUsuNome.getText());
+            pst.setString(3,txtUsuFone.getText());
+            pst.setString(4,txtUsuLogin.getText());
+            pst.setString(5,txtUsuSenha.getText());
+            //tem que converter pra setring porque se trata de uma opção de cbo
+            pst.setString(6,cboUsuPerfil.getSelectedItem().toString());
+            
+            if(txtUsuId.getText().isEmpty() || txtUsuNome.getText().isEmpty()|| txtUsuLogin.getText().isEmpty() || txtUsuSenha.getText().isEmpty()){
+                
+                JOptionPane.showMessageDialog(null,"preencha todos os campos obrigatórios ! ");
+            }
+           
+            //executando a consulta
+            pst.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null,"gravado com sucesso ! ");
+            
+            txtUsuId.setText(null);
+            txtUsuNome.setText(null);
+            txtUsuFone.setText(null);
+            txtUsuLogin.setText(null);
+            txtUsuSenha.setText(null);
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e);
+        }
+       
+       
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,6 +162,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
         btnUsuCreate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/create.png"))); // NOI18N
         btnUsuCreate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUsuCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuCreateActionPerformed(evt);
+            }
+        });
 
         btnUsuDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/delete.png"))); // NOI18N
         btnUsuDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -207,6 +275,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         // chamando a função consultar 
         consultar();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnUsuCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuCreateActionPerformed
+        // chamando a função adicionar
+        adicionar();
+    }//GEN-LAST:event_btnUsuCreateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
