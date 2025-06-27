@@ -33,4 +33,17 @@ CREATE TABLE tbos(
 
 );
 
+//CRIANDO O CAMPO PERFIL 
+
+use dbinfox;
+ALTER TABLE tbusuarios add COLUMN perfil varchar(50) NOT NULL;
+
+//atualizando o campo perfil
+
+USE dbinfox;
+UPDATE tbusuarios set perfil = "admin" WHERE iduser=1;
+UPDATE tbusuarios set perfil = "admin" WHERE iduser=2;
+
+ 
+
 

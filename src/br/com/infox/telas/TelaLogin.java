@@ -44,11 +44,36 @@ public void logar(){
         rs = pst.executeQuery(); 
         
         if(rs.next()){
-           TelaPrincipal principal = new TelaPrincipal();
-           principal.setVisible(true);
-           //fechando a tela de login depois de abrir a tela principal 
-           this.dispose();
-           conexao.close();
+            
+             // alinha baixo faz a leitura do perfil do usuario
+            //o rs puxa os campo e atribui uma string a cada um
+            //no total um susuario possui 6 campos e perfil eo o ultimo
+            //então ele esta na sexta string 
+            
+            String perfil = rs.getString(6);
+            
+           if(perfil.equals("admin")){
+               
+                  TelaPrincipal principal = new TelaPrincipal();
+                  principal.setVisible(true);
+                  TelaPrincipal.menCadUsu.setEnabled(true);
+                  TelaPrincipal.menRel.setEnabled(true);
+                  TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                  
+                  //fechando a tela de login depois de abrir a tela principal 
+                  this.dispose();
+                  conexao.close();
+          }else{
+                TelaPrincipal principal = new TelaPrincipal();
+                principal.setVisible(true);
+                this.dispose();
+                conexao.close();
+           
+           
+           
+           }      
+            
+        
         }else{
           JOptionPane.showMessageDialog(null,"Usuário ou senha invalida !");
         
